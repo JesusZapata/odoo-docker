@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 MAINTAINER Jesus Zapata <chuchocorleone@gmail.com>
 
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
@@ -7,19 +7,22 @@ RUN set -x; \
         && apt-get install -y --no-install-recommends \
             ca-certificates \
             curl \
+            nodejs \
             node-less \
-            python-gevent \
-            python-pip \
-            python-renderpm \
-            python-support \
-            python-watchdog \
-        && curl -o wkhtmltox.deb -SL http://nightly.odoo.com/extra/wkhtmltox-0.12.1.2_linux-jessie-amd64.deb \
-        && echo '40e8b906de658a2221b15e4e8cd82565a47d7ee8 wkhtmltox.deb' | sha1sum -c - \
-        && dpkg --force-depends -i wkhtmltox.deb \
+            python3 \
+            python3-gevent \
+            python3-pip \
+            python3-renderpm \
+            python3-watchdog \
+            python3-pdfkit \
+            wkhtmltopdf \
+            gnupg2 \
         && apt-get -y install -f --no-install-recommends \
-        && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
+        && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb \
-        && pip install psycogreen==1.0
+        && pip3 install num2words \
+        && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+        && apt-get install -y --no-install-recommends nodejs
 
 # Install Odoo
 ENV ODOO_VERSION 11.0
@@ -27,7 +30,7 @@ ENV ODOO_RELEASE 20171004
 RUN set -x; \
         curl -o odoo.deb -SL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
         && echo '2037f9d2a0d8ce2a1797ebed71fa809a6a8ef8d4 odoo.deb' | sha1sum -c - \
-        && dpkg --force-depends -i odoo.deb \
+        && apt-get -y --fix-broken install ./odoo.deb \
         && apt-get update \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
