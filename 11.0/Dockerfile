@@ -20,9 +20,11 @@ RUN set -x; \
         && apt-get -y install -f --no-install-recommends \
         && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false \
         && rm -rf /var/lib/apt/lists/* wkhtmltox.deb \
-        && pip3 install num2words \
-        && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-        && apt-get install -y --no-install-recommends nodejs
+        && pip3 install num2words setuptools wheel wizard \
+        && pip3 install wizard \
+        && curl -sL https://deb.nodesource.com/setup_4.x | bash - \
+        && apt-get install -y --no-install-recommends nodejs \
+        && npm install -g less less-plugin-clean-css
 
 # Install Odoo
 ENV ODOO_VERSION 11.0
