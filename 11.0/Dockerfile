@@ -2,14 +2,6 @@ FROM debian:stretch
 MAINTAINER Jesus Zapata <chuchocorleone@gmail.com>
 
 # utf-8 encoding
-#RUN apt-get clean && apt-get update && apt-get install -y locales
-#RUN locale-gen "en_US.UTF-8" \
-#    && echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
-#    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-#    && echo "LANG=en_US.UTF-8" > /etc/locale.conf
-#RUN locale-gen en_US.UTF-8
-#ENV LANG="en_US.UTF-8" LANGUAGE="en_US.UTF-8" LC_ALL="en_US.UTF-8" \
-#    PYTHONIOENCODING="UTF-8"
 ENV LANG C.UTF-8
 
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
