@@ -17,14 +17,16 @@ RUN set -x; \
             python3-pdfkit \
             wkhtmltopdf \
             gnupg2 \
-        && apt-get -y install -f --no-install-recommends \
-        && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false \
-        && rm -rf /var/lib/apt/lists/* wkhtmltox.deb \
-        && pip3 install num2words setuptools wheel wizard \
-        && pip3 install wizard \
-        && curl -sL https://deb.nodesource.com/setup_4.x | bash - \
+        && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false
+
+# Install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash - \
         && apt-get install -y --no-install-recommends nodejs \
         && npm install -g less less-plugin-clean-css
+
+# Install pip3 packages
+RUN pip3 install setuptools wheel \
+        && pip3 install num2words wizard
 
 # Install Odoo
 ENV ODOO_VERSION 11.0
